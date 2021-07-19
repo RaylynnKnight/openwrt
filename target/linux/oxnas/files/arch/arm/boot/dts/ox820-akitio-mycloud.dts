@@ -16,7 +16,7 @@
 	};
 
 	memory {
-		/* 128Mbytes DDR */
+		/* 256Mbytes DDR */
 		reg = <0x60000000 0x8000000>;
 	};
 
@@ -156,12 +156,4 @@
 &sata {
 	status = "okay";
 	nr-ports = <2>;
-};
-
-&pcie_phy {
-	status = "okay";
-};
-
-&pcie0 {
-	status = "okay";
 };
