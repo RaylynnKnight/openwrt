@@ -17,7 +17,7 @@
 
 	memory {
 		/* 256Mbytes DDR */
-		reg = <0x60000000 0x8000000>;
+		reg = <0x60000000 0x10000000>;
 	};
 
 	aliases {
@@ -32,14 +32,14 @@
 
 	i2c-gpio {
 		compatible = "i2c-gpio";
-		gpios = <&gpio1  9 GPIO_ACTIVE_HIGH
-		         &gpio1 10 GPIO_ACTIVE_HIGH>;
-		pinctrl-names = "default";
+		sda-gpios = <&gpio1 9 (GPIO_ACTIVE_HIGH|GPIO_OPEN_DRAIN)>;
+		sck-gpios = <&gpio1 10 (GPIO_ACTIVE_HIGH|GPIO_OPEN_DRAIN)>;
 		pinctrl-0 = <&pinctrl_i2c>;
 		i2c-gpio,delay-us = <10>;
 		#address-cells = <1>;
 		#size-cells = <0>;
-		ds1307: rtc@68 {
+
+		rtc0: rtc@68 {
 			compatible = "dallas,ds1307";
 			reg = <0x68>;
 		};
@@ -47,11 +47,10 @@
 
 	keys {
 		compatible = "gpio-keys-polled";
-		pinctrl-names = "default";
-		pinctrl-0 = <&pinctrl_buttons>;
 		#address-cells = <1>;
 		#size-cells = <0>;
 		poll-interval = <100>;
+
 		power {
 			label = "power";
 			gpios = <&gpio0 11 GPIO_ACTIVE_LOW>;
@@ -66,8 +65,6 @@
 
 	leds {
 		compatible = "gpio-leds";
-		pinctrl-names = "default";
-		pinctrl-0 = <&pinctrl_leds>;
 		led_status: status {
 			label = "akitio:red:status";
 			gpios = <&gpio0 29 GPIO_ACTIVE_HIGH>;
@@ -76,37 +73,7 @@
 
 	gpio-poweroff {
 		compatible = "gpio-poweroff";
-		pinctrl-names = "default";
-		pinctrl-0 = <&pinctrl_poweroff>;
 		gpios = <&gpio1 13 GPIO_SINGLE_ENDED>;
-	};
-};
-
-&pinctrl {
-	pinctrl_i2c: i2c-0 {
-		i2c {
-			pins = "gpio41", "gpio42"; /* MF_B9, MF_B10 */
-			function = "gpio";
-			/* ToDo: find a way to set debounce for those pins */
-		};
-	};
-	pinctrl_buttons: buttons-0 {
-		buttons {
-			pins = "gpio11", "gpio38"; /* MF_A11, MF_B6 GPIO */
-			function = "gpio";
-		};
-	};
-	pinctrl_leds: leds-0 {
-		leds {
-			pins = "gpio29"; /* MF_A29 GPIO */
-			function = "gpio";
-		};
-	};
-	pinctrl_poweroff: poweroff-0 {
-		poweroff {
-			pins = "gpio45"; /* MF_B13 GPIO */
-			function = "gpio";
-		};
 	};
 };
 
