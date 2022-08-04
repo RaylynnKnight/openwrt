@@ -69,6 +69,10 @@ zyxel,gs1900-8hp-v1|\
 zyxel,gs1900-8hp-v2)
 	ucidef_set_poe 70 "$lan_list"
 	;;
+zyxel,gs1900-24ep)
+	poe_list=$(sort-n $lan_list|head -12)
+	ucidef_set_poe 130 "$poe_list"
+	;;
 zyxel,gs1900-24hp-v1|\
 zyxel,gs1900-24hp-v2)
 	ucidef_set_poe 170 "$lan_list"
